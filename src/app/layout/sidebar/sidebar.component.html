@@ -1,18 +1,75 @@
+<div id="topbar">
+  <div class="left">
+    <button id="menu-toggle">
+      <span class="material-icons">menu</span>
+    </button>
+
+    <span class="material-icons user-icon">account_circle</span>
+
+    <span class="username">
+      <ng-container *ngIf="!cargandoUsuario; else cargando">
+        {{ usuario }}
+      </ng-container>
+     <ng-template #cargando>
+      <span class="username loader-placeholder"></span>
+    </ng-template>
+    </span>
+  </div>
+
+  <div class="center">
+    <span class="datetime">{{ fechaActual }} - {{ horaActual }}</span>
+  </div>
+
+  <div class="right">
+    <button (click)="toggleMenu()" class="user-menu" title="Cerrar sesión">
+      <span class="material-icons">exit_to_app</span>
+    </button>
+    <div class="dropdown" *ngIf="menuAbierto">
+      <button (click)="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
+
 <div id="wrapper">
   <!-- Sidebar -->
   <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
-      <li><a routerLink="/home">Nuevo pedido</a></li>
-      <li><a routerLink="/home/orders">Pedidos</a></li>
-      <li><a routerLink="/home/customers">Clientes</a></li>
-      <li><a routerLink="/home/products">Productos</a></li>
-      <li><a routerLink="/home/settings">Configuración</a></li>
+      <li>
+        <a routerLink="/home">
+          <span class="material-icons">add_shopping_cart</span>
+          Nuevo pedido
+        </a>
+      </li>
+      <li>
+        <a routerLink="/home/orders">
+          <span class="material-icons">list_alt</span>
+          Pedidos
+        </a>
+      </li>
+      <li>
+        <a routerLink="/home/customers">
+          <span class="material-icons">people</span>
+          Clientes
+        </a>
+      </li>
+      <li>
+        <a routerLink="/home/products">
+          <span class="material-icons">restaurant_menu</span>
+          Productos
+        </a>
+      </li>
+      <li>
+        <a routerLink="/home/settings">
+          <span class="material-icons">settings</span>
+          Configuración
+        </a>
+      </li>
     </ul>
   </div>
 
   <!-- Page Content -->
   <div id="page-content-wrapper">
-    <button id="menu-toggle">☰</button>
     <router-outlet></router-outlet>
   </div>
 </div>

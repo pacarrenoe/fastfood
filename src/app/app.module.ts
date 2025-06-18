@@ -8,6 +8,7 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import {environment} from "../environments/environment";
 import { NotFoundRedirectComponent } from './core/components/not-found-redirect/not-found-redirect.component';
 import {LayoutModule} from "./layout/layout.module";
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,11 @@ import {LayoutModule} from "./layout/layout.module";
   ],
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore())
+  ],
+  exports: [
+    NotFoundRedirectComponent
   ],
   bootstrap: [AppComponent]
 })

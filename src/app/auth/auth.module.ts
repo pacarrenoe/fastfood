@@ -4,17 +4,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
+import {NotFoundRedirectComponent} from "../core/components/not-found-redirect/not-found-redirect.component";
 
 
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    NotFoundRedirectComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+
   ]
 })
 export class AuthModule { }
