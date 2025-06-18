@@ -1,28 +1,18 @@
-<!-- Botón solo visible en pantallas pequeñas -->
-<button class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
+<div id="wrapper">
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+      <li><a routerLink="/home">Nuevo pedido</a></li>
+      <li><a routerLink="/home/orders">Pedidos</a></li>
+      <li><a routerLink="/home/customers">Clientes</a></li>
+      <li><a routerLink="/home/products">Productos</a></li>
+      <li><a routerLink="/home/settings">Configuración</a></li>
+    </ul>
+  </div>
 
-<nav class="sidebar" [class.open]="isOpen">
-  <div class="logo">FOO</div>
-  <ul class="nav-links">
-    <li routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      <span class="icon">➕</span>
-      <span>Nuevo pedido</span>
-    </li>
-    <li routerLink="/home/orders" routerLinkActive="active" (click)="toggleSidebar()">
-      <span class="icon">🧾</span>
-      <span>Pedidos</span>
-    </li>
-    <li routerLink="/home/customers" routerLinkActive="active" (click)="toggleSidebar()">
-      <span class="icon">👥</span>
-      <span>Customers</span>
-    </li>
-    <li routerLink="/home/products" routerLinkActive="active" (click)="toggleSidebar()">
-      <span class="icon">📦</span>
-      <span>Productos</span>
-    </li>
-    <li routerLink="/home/settings" routerLinkActive="active" (click)="toggleSidebar()">
-      <span class="icon">⚙️</span>
-      <span>Configuracion</span>
-    </li>
-  </ul>
-</nav>
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <button id="menu-toggle">☰</button>
+    <router-outlet></router-outlet>
+  </div>
+</div>
