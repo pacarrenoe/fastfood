@@ -1,0 +1,22 @@
+<div class="login-container">
+  <div class="login-card">
+    <img src="assets/icons/fast-food.png" alt="El Arbolito" class="logo" />
+    <h2 class="title">Inicia sesión</h2>
+
+    <form [formGroup]="form" (ngSubmit)="loginWithEmail()">
+      <input type="email" formControlName="email" placeholder="Correo electrónico" />
+      <input type="password" formControlName="password" placeholder="Contraseña" />
+      <button type="submit" class="login-btn">Ingresar</button>
+    </form>
+
+    <div class="divider">
+      <span>o continúa con</span>
+    </div>
+
+    <button class="google-btn" (click)="loginWithGoogle()">
+      <img src="assets/icons/google.png" alt="Google" />
+    </button>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </div>
+</div>

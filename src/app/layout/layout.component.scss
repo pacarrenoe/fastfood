@@ -1,0 +1,17 @@
+.layout-container {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  margin-left: 240px;
+  flex: 1;
+  padding: 1.5rem;
+  background-color: #f4f6f8;
+  color: #1e1e1e;
+  font-family: 'Segoe UI', sans-serif;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
