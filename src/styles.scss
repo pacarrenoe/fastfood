@@ -27,3 +27,22 @@ button {
   font: inherit;
   cursor: pointer;
 }
+
+
+:root {
+  //Backgrounds
+  --background-primary: #121212;
+  --background-bl: #003861;
+  --background-wh: #ffffff;
+
+
+  //Letras
+  --letter-primary: #ffffff;
+  --letter-secondary: #ffffff;
+
+  //Hover
+  --hover-bl: #003861;
+
+  //Placeholder
+  --placeholder-background: linear-gradient(90deg, #cccccc 25%, #e0e0e0 50%, #cccccc 75%)
+}

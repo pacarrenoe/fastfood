@@ -2,10 +2,11 @@
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: Auth, private router: Router, private toastr: ToastrService) {}
 
   login(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
@@ -16,7 +17,7 @@ export class AuthService {
       localStorage.clear();
       this.router.navigate(['/login']);
     }).catch(err => {
-      console.error('Error cerrando sesión', err);
+      this.toastr.error('Error cerrando sesion');
     });
   }
 

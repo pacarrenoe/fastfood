@@ -5,8 +5,7 @@
   width:0;
   height:100vh;
   overflow-y:hidden;
-  background: #121212;
-  opacity:0.9;
+  background: var(--background-primary);
   transition:all .5s;
   display:flex;
   align-items:center;
@@ -54,11 +53,11 @@
   justify-content: flex-start;
   padding: 10px;
   text-decoration: none;
-  color: #ddd;
+  color: var(--letter-primary);
 }
 
 .sidebar-nav li:hover{
-  background:#846bab;
+  background:var(--hover-bl);
 }
 
 
@@ -67,8 +66,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #3f3d56;
-  color: white;
+  background: var(--background-primary);
+  color: var(--letter-primary);
   padding: 0.5rem 1rem;
 
   .left {
@@ -79,12 +78,12 @@
     #menu-toggle {
       background: transparent;
       border: none;
-      color: white;
+      color: var(--letter-primary);
       cursor: pointer;
       padding: 0.25rem 0.5rem;
 
       .material-icons {
-        font-size: 28px; // ícono hamburguesa más grande
+        font-size: 28px;
       }
     }
 
@@ -98,17 +97,21 @@
 
     .loader-placeholder {
       display: inline-block;
-      background: rgba(255, 255, 255, 0.2);
+      width: 120px;
+      height: 40px;
+      background: var(--placeholder-background);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite linear;
       border-radius: 4px;
-      padding: 0 10px;
-      font-size: 0.9rem;
-      color: transparent;
     }
   }
 
   .center {
     font-weight: bold;
     font-size: 1rem;
+    background: var(--background-bl);
+    padding: 10px;
+    border-radius: 10px;
   }
 
   .right {
@@ -116,40 +119,24 @@
     align-items: center;
     gap: 0.5rem;
 
-    .user-menu {
+    .logout {
       background: transparent;
       border: none;
       cursor: pointer;
-      color: white;
+      color: var(--background-wh);
 
       .material-icons {
         font-size: 24px;
       }
-    }
 
-    .dropdown {
-      position: absolute;
-      top: 60px;
-      right: 10px;
-      background: white;
-      color: #333;
-      border-radius: 4px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-      padding: 0.5rem;
-      z-index: 1000;
+      &:hover {
+        color: var(--hover-bl);
+      }
     }
   }
 }
 
-.loader-placeholder {
-  display: inline-block;
-  width: 120px;
-  height: 40px;
-  background: linear-gradient(90deg, #cccccc 25%, #e0e0e0 50%, #cccccc 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.2s infinite linear;
-  border-radius: 4px;
-}
+
 
 @keyframes shimmer {
   0% {

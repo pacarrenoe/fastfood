@@ -12,6 +12,8 @@ import {
   onAuthStateChanged, User
 } from '@angular/fire/auth';
 
+import { ToastrService } from 'ngx-toastr';
+
 
 
 @Component({
@@ -29,7 +31,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: Auth,
     private router: Router,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private toastr: ToastrService
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -72,7 +75,7 @@ export class LoginComponent implements OnInit {
 
       this.router.navigateByUrl('/home');
     } catch (err: any) {
-      this.error = err.message ?? 'Correo o contraseña inválida';
+      this.toastr.error('Correo o contraseña inválida');
     }
   }
 
@@ -83,7 +86,7 @@ export class LoginComponent implements OnInit {
       const email = result.user.email;
 
       if (!email) {
-        this.error = 'No se pudo obtener el correo electrónico de Google.';
+        this.toastr.error('No se pudo obtener el correo electrónico de Google.');
         return;
       }
 
@@ -91,7 +94,7 @@ export class LoginComponent implements OnInit {
 
       if (signInMethods.length === 0) {
         await result.user.delete();
-        this.error = 'Ups, no te encuentras registrado.';
+        this.toastr.error('No te encuentras registrado.');
         return;
       }
 
@@ -114,7 +117,7 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl('/home');
 
     } catch (err: any) {
-      this.error = err.message ?? 'Error al iniciar sesión con Google';
+      this.toastr.error('Error al iniciar sesión con Google.');
       console.error(err);
     }
   }

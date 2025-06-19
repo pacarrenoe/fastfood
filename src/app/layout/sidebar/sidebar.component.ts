@@ -5,8 +5,7 @@ import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import {ConfirmDialogComponent, ConfirmDialogData} from "../../shared/confirm-dialog/confirm-dialog.component";
 import {AuthService} from "../../auth/auth.service";
-
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,7 +19,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   private authSubscription?: Subscription;
   cargandoUsuario: boolean = true;
 
-  constructor(private auth: Auth, private firestore: Firestore, private dialog: MatDialog, private authService: AuthService) {}
+  constructor(private auth: Auth, private firestore: Firestore, private dialog: MatDialog, private authService: AuthService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.cargandoUsuario = true;
@@ -39,6 +38,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         } catch (err) {
           console.error('Error al obtener datos del usuario:', err);
+          this.toastr.error('Error al obtener datos del usuario:');
           this.usuario = user.email || 'Usuario';
         }
       }

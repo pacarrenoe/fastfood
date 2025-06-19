@@ -11,7 +11,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     AppRoutingModule,
     LayoutModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right', // o 'toast-top-right'
+      timeOut: 3000,
+      closeButton: true
+    }),
   ],
   providers: [
     provideFirebaseApp(() => initializeApp(environment.firebase)),
