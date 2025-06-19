@@ -10,8 +10,7 @@ import {NotFoundRedirectComponent} from "../core/components/not-found-redirect/n
 
 @NgModule({
   declarations: [
-    LoginComponent,
-    NotFoundRedirectComponent
+    LoginComponent
   ],
   imports: [
     CommonModule,
