@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import {ConfirmDialogComponent, ConfirmDialogData} from "../../shared/confirm-dialog/confirm-dialog.component";
+import {AuthService} from "../../auth/auth.service";
 
 
 
@@ -19,7 +20,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   private authSubscription?: Subscription;
   cargandoUsuario: boolean = true;
 
-  constructor(private auth: Auth, private firestore: Firestore, private dialog: MatDialog) {}
+  constructor(private auth: Auth, private firestore: Firestore, private dialog: MatDialog, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.cargandoUsuario = true;
@@ -71,16 +72,17 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   confirmarLogout(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
       data: {
         title: 'Cerrar sesión',
-        message: '¿Estás seguro de que quieres cerrar sesión?'
-      } as ConfirmDialogData
+        message: '¿Estás seguro de que deseas cerrar sesión?',
+        confirmText: 'Cerrar sesión',
+        cancelText: 'Cancelar'
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.logout();
+        this.authService.logout(); // Este método se encarga del signOut y la redirección
       }
     });
   }

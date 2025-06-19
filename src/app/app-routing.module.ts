@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {LayoutComponent} from "./layout/layout.component";
 import {AuthGuard} from "./core/guards/auth.guard";
-import {NotFoundRedirectComponent} from "./core/components/not-found-redirect/not-found-redirect.component";
+import {NotFoundRedirectComponent} from "./shared/not-found-redirect/not-found-redirect.component";
 
 const routes: Routes = [
   {

@@ -12,7 +12,12 @@ export class AuthService {
   }
 
   logout() {
-    return signOut(this.auth).then(() => this.router.navigate(['/login']));
+    signOut(this.auth).then(() => {
+      localStorage.clear();
+      this.router.navigate(['/login']);
+    }).catch(err => {
+      console.error('Error cerrando sesión', err);
+    });
   }
 
   isLoggedIn(): boolean {

@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
-import {NotFoundRedirectComponent} from "../core/components/not-found-redirect/not-found-redirect.component";
+import {SharedModule} from "../shared/shared.module";
 
 
 
@@ -16,6 +16,7 @@ import {NotFoundRedirectComponent} from "../core/components/not-found-redirect/n
     CommonModule,
     ReactiveFormsModule,
     AuthRoutingModule,
+    SharedModule
 
   ]
 })
