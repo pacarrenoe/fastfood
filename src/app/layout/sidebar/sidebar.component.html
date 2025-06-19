@@ -21,12 +21,9 @@
   </div>
 
   <div class="right">
-    <button (click)="toggleMenu()" class="user-menu" title="Cerrar sesión">
+    <button (click)="confirmarLogout()" class="user-menu" title="Cerrar sesión">
       <span class="material-icons">exit_to_app</span>
     </button>
-    <div class="dropdown" *ngIf="menuAbierto">
-      <button (click)="logout()">Cerrar sesión</button>
-    </div>
   </div>
 </div>
 

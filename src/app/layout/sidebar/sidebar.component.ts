@@ -2,7 +2,8 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Auth, onAuthStateChanged, User } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
-
+import { MatDialog } from '@angular/material/dialog';
+import {ConfirmDialogComponent, ConfirmDialogData} from "../../shared/confirm-dialog/confirm-dialog.component";
 
 
 
@@ -15,11 +16,10 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
   usuario: string = localStorage.getItem('usuario') || '';
   fechaActual: string = '';
   horaActual: string = '';
-  menuAbierto: boolean = false;
   private authSubscription?: Subscription;
   cargandoUsuario: boolean = true;
 
-  constructor(private auth: Auth, private firestore: Firestore) {}
+  constructor(private auth: Auth, private firestore: Firestore, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.cargandoUsuario = true;
@@ -69,11 +69,23 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.horaActual = ahora.toLocaleTimeString();
   }
 
-  toggleMenu() {
-    this.menuAbierto = !this.menuAbierto;
+  confirmarLogout(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: {
+        title: 'Cerrar sesión',
+        message: '¿Estás seguro de que quieres cerrar sesión?'
+      } as ConfirmDialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.logout();
+      }
+    });
   }
 
   logout() {
-    alert('Sesión cerrada');
+    console.log("cerrada")
   }
 }
