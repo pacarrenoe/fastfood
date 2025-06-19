@@ -1,6 +1,6 @@
 <div id="topbar">
   <div class="left">
-    <button id="menu-toggle">
+    <button id="menu-toggle" (click)="toggleMenu()">
       <span class="material-icons">menu</span>
     </button>
 
@@ -28,12 +28,12 @@
 </div>
 
 
-<div id="wrapper">
+<div id="wrapper" [class.menuDisplayed]="menuAbierto">
   <!-- Sidebar -->
   <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
       <li>
-        <a routerLink="/home">
+        <a routerLink="/home/new-order">
           <span class="material-icons">add_shopping_cart</span>
           Nuevo pedido
         </a>

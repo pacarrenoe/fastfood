@@ -9,12 +9,10 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   fetchSignInMethodsForEmail,
-  onAuthStateChanged, User
+  onAuthStateChanged,
+  User
 } from '@angular/fire/auth';
-
 import { ToastrService } from 'ngx-toastr';
-
-
 
 @Component({
   selector: 'app-login',
@@ -24,8 +22,8 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit {
   form: FormGroup;
   error: string | null = null;
-  mostrarLogin: boolean = false;
-  cargando: boolean = true;
+  mostrarLogin = false;
+  cargando = true;
 
   constructor(
     private fb: FormBuilder,
@@ -47,39 +45,26 @@ export class LoginComponent implements OnInit {
       } else {
         this.mostrarLogin = true;
       }
-      this.cargando = false; // termina la espera
+      this.cargando = false;
     });
   }
 
-  async loginWithEmail() {
+  /* ----------------------------- Email/Password ---------------------------- */
+  async loginWithEmail(): Promise<void> {
     if (this.form.invalid) return;
     const { email, password } = this.form.value;
 
     try {
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-      const user: User = userCredential.user;
-
-      const cachedNombre = localStorage.getItem('usuario');
-      if (!cachedNombre) {
-        const docRef = doc(this.firestore, 'usuarios', user.uid);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const datos = docSnap.data();
-          const nombreCompleto = `${datos['nombre']} ${datos['apellido']}`;
-          localStorage.setItem('usuario', nombreCompleto);
-        } else {
-          localStorage.setItem('usuario', user.email || 'Usuario');
-        }
-      }
-
+      const { user } = await signInWithEmailAndPassword(this.auth, email, password);
+      await this.cacheNombreUsuario(user);
       this.router.navigateByUrl('/home');
-    } catch (err: any) {
+    } catch (err) {
       this.toastr.error('Correo o contraseña inválida');
     }
   }
 
-  async loginWithGoogle() {
+  /* ------------------------------- Google OAuth ----------------------------- */
+  async loginWithGoogle(): Promise<void> {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(this.auth, provider);
@@ -90,35 +75,40 @@ export class LoginComponent implements OnInit {
         return;
       }
 
+      // Verifica que el correo exista en tu Auth
       const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
-
       if (signInMethods.length === 0) {
         await result.user.delete();
         this.toastr.error('No te encuentras registrado.');
         return;
       }
 
-      const user = result.user;
-
-      const cachedNombre = localStorage.getItem('usuario');
-      if (!cachedNombre && user) {
-        const docRef = doc(this.firestore, 'usuarios', user.uid);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const datos = docSnap.data();
-          const nombreCompleto = `${datos['nombre']} ${datos['apellido']}`;
-          localStorage.setItem('usuario', nombreCompleto);
-        } else {
-          localStorage.setItem('usuario', user.email || 'Usuario');
-        }
-      }
-
+      await this.cacheNombreUsuario(result.user);
       this.router.navigateByUrl('/home');
-
-    } catch (err: any) {
+    } catch (err) {
       this.toastr.error('Error al iniciar sesión con Google.');
       console.error(err);
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                           Utilidad para cachear nombre                     */
+  /* -------------------------------------------------------------------------- */
+  private async cacheNombreUsuario(user: User): Promise<void> {
+    try {
+      const docRef = doc(this.firestore, 'users', user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const datos = docSnap.data();
+        const nombreCompleto = `${datos['nombre']} ${datos['apellido']}`;
+        sessionStorage.setItem('usuario', nombreCompleto);
+      } else {
+        sessionStorage.setItem('usuario', user.email || 'Usuario');
+      }
+    } catch (err) {
+      // Si falla la lectura de Firestore, al menos guarda el email
+      sessionStorage.setItem('usuario', user.email || 'Usuario');
     }
   }
 }
