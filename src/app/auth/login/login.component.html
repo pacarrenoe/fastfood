@@ -1,6 +1,7 @@
 
 
 
+<app-loader *ngIf="cargando"></app-loader>
 <ng-container *ngIf="!cargando; else cargandoTemplate">
   <div *ngIf="mostrarLogin">
     <div class="login-container">

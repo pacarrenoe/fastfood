@@ -16,6 +16,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CategoriaDialogComponent } from './categoria-dialog/categoria-dialog.component';
+import {MatList, MatListItem} from "@angular/material/list";
+import {MatIcon} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -37,7 +39,10 @@ import { CategoriaDialogComponent } from './categoria-dialog/categoria-dialog.co
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatList,
+    MatListItem,
+    MatIcon
   ],
   exports: [
     LoaderComponent,

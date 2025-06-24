@@ -127,7 +127,7 @@ export class ProductosService {
     return [...this.categoriasCache];
   }
 
-  private generarId(): string {
+  public generarId(): string {
     return doc(collection(this.firestore, '_')).id;
   }
 }

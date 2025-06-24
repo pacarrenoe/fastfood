@@ -54,11 +54,14 @@ export class LoginComponent implements OnInit {
   /* ----------------------------- Email/Password ---------------------------- */
   async loginWithEmail(): Promise<void> {
     if (this.form.invalid) return;
+
     const { email, password } = this.form.value;
+    this.cargando = true;
 
     try {
       const { user } = await signInWithEmailAndPassword(this.auth, email, password);
       await this.cacheNombreUsuario(user);
+
       this.productosService.obtenerCategorias().subscribe({
         next: categorias => {
           sessionStorage.setItem('categorias', JSON.stringify(categorias));
@@ -68,16 +71,20 @@ export class LoginComponent implements OnInit {
               sessionStorage.setItem('productos', JSON.stringify(productos));
               this.router.navigateByUrl('/home');
             },
-            error: () => this.toastr.error('Error al cargar productos')
+            error: () => {
+              this.toastr.error('Error al cargar productos');
+              this.cargando = false;
+            }
           });
         },
-        error: (e) => {
-          console.error('ERROR al cargar categorías:', e);
+        error: () => {
           this.toastr.error('Error al cargar categorías');
+          this.cargando = false;
         }
       });
     } catch (err) {
       this.toastr.error('Correo o contraseña inválida');
+      this.cargando = false;
     }
   }
 

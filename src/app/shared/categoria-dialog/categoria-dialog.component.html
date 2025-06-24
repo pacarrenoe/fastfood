@@ -1,14 +1,28 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<h2 mat-dialog-title class="text-lg font-bold">{{ data.title }}</h2>
 
-<mat-dialog-content [formGroup]="form" class="form">
+<mat-dialog-content [formGroup]="form" class="form-container">
   <mat-form-field appearance="outline" class="w-full">
     <mat-label>Nombre de la categoría</mat-label>
     <input matInput formControlName="nombre" />
     <mat-error *ngIf="form.get('nombre')?.invalid">Este campo es obligatorio</mat-error>
   </mat-form-field>
+
+  <div class="actions">
+    <button mat-flat-button color="primary" (click)="agregar()" [disabled]="form.invalid">Agregar</button>
+  </div>
+
+  <div *ngIf="categorias.length > 0" class="categoria-lista">
+    <h4>Categorías agregadas:</h4>
+    <mat-list>
+      <mat-list-item *ngFor="let cat of categorias">
+        <mat-icon mat-list-icon>label</mat-icon>
+        <h5 matLine>{{ cat.nombre }}</h5>
+      </mat-list-item>
+    </mat-list>
+  </div>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="end" class="footer">
   <button mat-button (click)="cancelar()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="form.invalid">Guardar</button>
+  <button mat-flat-button color="accent" (click)="continuar()" [disabled]="categorias.length === 0">Continuar</button>
 </mat-dialog-actions>

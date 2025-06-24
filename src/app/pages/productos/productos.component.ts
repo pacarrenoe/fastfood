@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CategoriaDialogComponent } from "../../shared/categoria-dialog/categoria-dialog.component";
 import { ProductoDialogComponent } from "../../shared/producto-dialog/producto-dialog.component";
 import {Categoria, Producto} from "../../core/models/interfaces.model";
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-productos',
@@ -17,6 +18,7 @@ export class ProductosComponent implements OnInit {
   productos: Producto[] = [];
   categoriaSeleccionada = '';
   cambiosPendientes = false;
+  cargando = false;
 
   constructor(
     private productosService: ProductosService,
@@ -35,31 +37,33 @@ export class ProductosComponent implements OnInit {
     this.productosService.getProductosLocales();
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  confirmarSalida($event: any): void {
+    if (this.cambiosPendientes) {
+      $event.returnValue = true;
+    }
+  }
+
   // -------------------- CATEGORÍAS --------------------
 
   agregarCategoria(): void {
     const dialogRef = this.dialog.open(CategoriaDialogComponent, {
-      data: {
-        title: 'Nueva categoría',
-        nombre: ''
-      }
+      data: { title: 'Nueva categoría' }
     });
 
-    dialogRef.afterClosed().subscribe((nombre: string) => {
-      if (!nombre?.trim()) return;
+    dialogRef.afterClosed().subscribe((nuevasCategorias: Categoria[] | undefined) => {
+      if (!nuevasCategorias || nuevasCategorias.length === 0) return;
 
-      const existe = this.categorias.some(c => c.nombre.toLowerCase() === nombre.toLowerCase());
-      if (existe) {
-        this.toastr.warning('Ya existe una categoría con ese nombre');
-        return;
-      }
+      nuevasCategorias.forEach(cat => {
+        const existe = this.categorias.some(c => c.nombre.toLowerCase() === cat.nombre.toLowerCase());
+        if (!existe) this.categorias.push(cat);
+      });
 
-      const nueva: Categoria = { nombre };
-      this.productosService.agregarCategoria(nueva);
-      this.categorias.push({ ...nueva, id: nueva.id });
       this.cambiosPendientes = true;
+      this.toastr.info('Recuerda guardar los cambios');
     });
   }
+
 
   editarCategoria(cat: Categoria): void {
     const dialogRef = this.dialog.open(CategoriaDialogComponent, {
@@ -172,11 +176,37 @@ export class ProductosComponent implements OnInit {
   }
 
   guardarCambios(): void {
+    this.cargando = true;
+    this.toastr.info('Guardando cambios...');
+
     this.productosService.guardarCambios()
       .then(() => {
         this.toastr.success('Cambios guardados correctamente');
         this.cambiosPendientes = false;
+
+        this.productosService.getCategoriasLocales();
+        this.productosService.getProductosLocales();
+
+        setTimeout(() => {
+          sessionStorage.setItem('categorias', JSON.stringify(this.categorias));
+          sessionStorage.setItem('productos', JSON.stringify(this.productos));
+          this.cargando = false;
+        }, 500);
       })
-      .catch(() => this.toastr.error('Error al guardar los cambios'));
+      .catch(() => {
+        this.toastr.error('Error al guardar los cambios');
+        this.cargando = false;
+      });
   }
+
+  puedeSalir(): boolean {
+    return !this.cambiosPendientes;
+  }
+
+
+
+
+
+
+
 }

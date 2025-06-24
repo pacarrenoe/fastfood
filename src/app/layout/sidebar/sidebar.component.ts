@@ -58,6 +58,8 @@ export class SidebarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
+        sessionStorage.clear();
+        localStorage.clear();
         this.authService.logout();
       }
     });
