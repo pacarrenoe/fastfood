@@ -14,10 +14,11 @@ const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
-        path: '',
+        path: 'productos',
         loadChildren: () =>
-          import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule)
+          import('./pages/productos/productos.module').then(m => m.ProductosModule)
       }
     ]
   },

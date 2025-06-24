@@ -13,6 +13,7 @@ import {
   User
 } from '@angular/fire/auth';
 import { ToastrService } from 'ngx-toastr';
+import {ProductosService} from "../../core/services/productos.service";
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
     private auth: Auth,
     private router: Router,
     private firestore: Firestore,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private productosService: ProductosService
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -57,7 +59,23 @@ export class LoginComponent implements OnInit {
     try {
       const { user } = await signInWithEmailAndPassword(this.auth, email, password);
       await this.cacheNombreUsuario(user);
-      this.router.navigateByUrl('/home');
+      this.productosService.obtenerCategorias().subscribe({
+        next: categorias => {
+          sessionStorage.setItem('categorias', JSON.stringify(categorias));
+
+          this.productosService.obtenerProductos().subscribe({
+            next: productos => {
+              sessionStorage.setItem('productos', JSON.stringify(productos));
+              this.router.navigateByUrl('/home');
+            },
+            error: () => this.toastr.error('Error al cargar productos')
+          });
+        },
+        error: (e) => {
+          console.error('ERROR al cargar categorías:', e);
+          this.toastr.error('Error al cargar categorías');
+        }
+      });
     } catch (err) {
       this.toastr.error('Correo o contraseña inválida');
     }
@@ -84,7 +102,20 @@ export class LoginComponent implements OnInit {
       }
 
       await this.cacheNombreUsuario(result.user);
-      this.router.navigateByUrl('/home');
+      this.productosService.obtenerCategorias().subscribe({
+        next: categorias => {
+          sessionStorage.setItem('categorias', JSON.stringify(categorias));
+
+          this.productosService.obtenerProductos().subscribe({
+            next: productos => {
+              sessionStorage.setItem('productos', JSON.stringify(productos));
+              this.router.navigateByUrl('/home');
+            },
+            error: () => this.toastr.error('Error al cargar productos')
+          });
+        },
+        error: () => this.toastr.error('Error al cargar categorías')
+      });
     } catch (err) {
       this.toastr.error('Error al iniciar sesión con Google.');
       console.error(err);

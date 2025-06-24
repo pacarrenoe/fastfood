@@ -1,0 +1,99 @@
+<div class="contenedor-productos">
+  <div class="encabezado">
+    <div class="titulo">
+      <span class="material-icons">inventory_2</span>
+      <h2>Productos</h2>
+    </div>
+
+    <div class="acciones-superiores">
+      <button class="btn btn-outline-success" (click)="agregarCategoria()">
+        <span class="material-icons">category</span> Nueva categoría
+      </button>
+      <button class="btn btn-primary" (click)="abrirFormulario()">
+        <span class="material-icons">add</span> Nuevo producto
+      </button>
+      <button
+        class="btn btn-secondary"
+        *ngIf="cambiosPendientes"
+        (click)="guardarCambios()"
+      >
+        Guardar cambios
+      </button>
+    </div>
+  </div>
+
+  <div class="categoria-filtro">
+    <label for="categoriaSelect">Filtrar por categoría:</label>
+    <select id="categoriaSelect" [(ngModel)]="categoriaSeleccionada">
+      <option value="">Todas</option>
+      <option *ngFor="let cat of categorias" [value]="cat.nombre">{{ cat.nombre }}</option>
+    </select>
+  </div>
+
+  <div class="tabla-contenedor">
+    <table class="tabla-productos">
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Categoría</th>
+        <th>Vigente</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let prod of productosFiltrados">
+        <td>{{ prod.nombre }}</td>
+        <td>${{ prod.precio }}</td>
+        <td>{{ prod.categoriaId }}</td>
+        <td>
+            <span
+              class="estado"
+              [ngClass]="{ activo: prod.vigente, inactivo: !prod.vigente }"
+              (click)="cambiarVigencia(prod)"
+              title="Cambiar vigencia"
+            >
+              {{ prod.vigente ? '✔' : '✖' }}
+            </span>
+        </td>
+        <td>
+          <button class="btn-accion editar" (click)="editar(prod)" title="Editar">
+            <span class="material-icons">edit</span>
+          </button>
+          <button class="btn-accion eliminar" (click)="eliminar(prod)" title="Eliminar">
+            <span class="material-icons">delete</span>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="productosFiltrados.length === 0">
+        <td colspan="5" class="sin-resultados">No hay productos para mostrar</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="gestion-categorias">
+    <h3>Categorías</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th style="text-align: right !important;">Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let cat of categorias">
+        <td>{{ cat.nombre }}</td>
+        <td>
+          <button class="editar" (click)="editarCategoria(cat)">
+            <span class="material-icons">edit</span>
+          </button>
+          <button class="eliminar" (click)="eliminarCategoria(cat)">
+            <span class="material-icons">delete</span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
