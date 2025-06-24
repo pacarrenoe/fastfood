@@ -31,8 +31,7 @@ export class ProductosService {
   }
 
   agregarCategoria(cat: Categoria): void {
-    const id = this.generarId();
-    this.categoriasCache.push({ id, nombre: cat.nombre });
+    this.categoriasCache.push(cat);
   }
 
   editarCategoria(cat: Categoria): void {

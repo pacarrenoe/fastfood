@@ -41,6 +41,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    sessionStorage.clear();
+    localStorage.clear();
     onAuthStateChanged(this.auth, user => {
       if (user) {
         this.router.navigateByUrl('/home');

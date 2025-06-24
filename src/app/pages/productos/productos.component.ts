@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import {ProductosService} from '../../core/services/productos.service';
@@ -7,6 +7,7 @@ import { CategoriaDialogComponent } from "../../shared/categoria-dialog/categori
 import { ProductoDialogComponent } from "../../shared/producto-dialog/producto-dialog.component";
 import {Categoria, Producto} from "../../core/models/interfaces.model";
 import { HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-productos',
@@ -19,6 +20,8 @@ export class ProductosComponent implements OnInit {
   categoriaSeleccionada = '';
   cambiosPendientes = false;
   cargando = false;
+
+  private router = inject(Router);
 
   constructor(
     private productosService: ProductosService,
@@ -46,15 +49,13 @@ export class ProductosComponent implements OnInit {
 
   guardarCambios(): void {
     this.cargando = true;
-    this.toastr.info('Guardando cambios...');
-
     this.productosService.guardarCambios()
       .then(() => {
+        this.productosService.getCategoriasLocales();
+        this.productosService.getProductosLocales();
         this.toastr.success('Cambios guardados correctamente');
         this.cambiosPendientes = false;
 
-        this.productosService.getCategoriasLocales();
-        this.productosService.getProductosLocales();
 
         setTimeout(() => {
           sessionStorage.setItem('categorias', JSON.stringify(this.categorias));
@@ -80,13 +81,18 @@ export class ProductosComponent implements OnInit {
 
       nuevasCategorias.forEach(cat => {
         const existe = this.categorias.some(c => c.nombre.toLowerCase() === cat.nombre.toLowerCase());
-        if (!existe) this.categorias.push(cat);
+        if (!existe) {
+          this.categorias.push(cat);
+          this.productosService.agregarCategoria(cat); // << ESTA LÍNEA ES CLAVE
+        }
       });
 
       this.cambiosPendientes = true;
       this.toastr.info('Recuerda guardar los cambios');
     });
   }
+
+
 
 
   editarCategoria(cat: Categoria): void {

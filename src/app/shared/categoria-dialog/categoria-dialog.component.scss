@@ -1,20 +1,66 @@
-.form-container {
+.dialog-container {
+  width: 400px;
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
-.actions {
+.header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  .agregar-btn {
+    background-color: #2e7d32; // verde mockup
+    color: white;
+    font-weight: bold;
+  }
+}
+
+.input-full {
+  width: 100%;
+}
+
+.form-group {
+  margin-top: -10px;
 }
 
 .categoria-lista {
-  margin-top: 16px;
-  max-height: 200px;
-  overflow-y: auto;
+  ul {
+    padding-left: 18px;
+    margin: 0;
+
+    li {
+      list-style-type: disc;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+  }
 }
 
 .footer {
-  padding-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+
+  button {
+    min-width: 110px;
+    font-weight: bold;
+  }
+
+  button[color="warn"] {
+    background-color: #616161;
+    color: white;
+  }
+
+  button[color="accent"] {
+    background-color: #005a8d;
+    color: white;
+  }
 }

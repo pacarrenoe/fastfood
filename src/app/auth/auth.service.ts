@@ -16,8 +16,9 @@ export class AuthService {
     signOut(this.auth).then(() => {
       sessionStorage.clear();
       localStorage.clear();
-
       this.router.navigate(['/login']);
+      sessionStorage.clear();
+      localStorage.clear();
     }).catch(() => {
       this.toastr.error('Error cerrando sesion');
     });
