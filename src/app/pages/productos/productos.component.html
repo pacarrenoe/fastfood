@@ -31,48 +31,6 @@
     </select>
   </div>
 
-  <div class="tabla-contenedor">
-    <table class="tabla-productos">
-      <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Categoría</th>
-        <th>Vigente</th>
-        <th>Acciones</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let prod of productosFiltrados">
-        <td>{{ prod.nombre }}</td>
-        <td>${{ prod.precio }}</td>
-        <td>{{ prod.categoriaId }}</td>
-        <td>
-            <span
-              class="estado"
-              [ngClass]="{ activo: prod.vigente, inactivo: !prod.vigente }"
-              (click)="cambiarVigencia(prod)"
-              title="Cambiar vigencia"
-            >
-              {{ prod.vigente ? '✔' : '✖' }}
-            </span>
-        </td>
-        <td>
-          <button class="btn-accion editar" (click)="editar(prod)" title="Editar">
-            <span class="material-icons">edit</span>
-          </button>
-          <button class="btn-accion eliminar" (click)="eliminar(prod)" title="Eliminar">
-            <span class="material-icons">delete</span>
-          </button>
-        </td>
-      </tr>
-      <tr *ngIf="productosFiltrados.length === 0">
-        <td colspan="5" class="sin-resultados">No hay productos para mostrar</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
   <div class="gestion-categorias">
     <h3>Categorías</h3>
     <table>
